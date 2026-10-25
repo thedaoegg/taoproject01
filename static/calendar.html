@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taoist Holiday Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#23211d;--mute:#6f685c;--line:#e2d9c6;--accent:#a8321f;--jade:#2f6b5a;--tint:#efe6d2;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17160f;--card:#201e16;--ink:#ece6d6;--mute:#a39b88;--line:#37332500;--line:#383425;--accent:#e2705a;--jade:#6fb9a2;--tint:#2a271b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17160f;--card:#201e16;--ink:#ece6d6;--mute:#a39b88;--line:#383425;--accent:#e2705a;--jade:#6fb9a2;--tint:#2a271b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px 56px}
+h1{font:600 2.2rem/1.1 "Cormorant Garamond",Georgia,serif;margin:0}
+.sub{color:var(--mute);margin:.3rem 0 1.4rem}
+.next{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;margin-bottom:20px}
+.next b{font:600 1.35rem "Cormorant Garamond",Georgia,serif}
+.wtop{display:flex;gap:16px;align-items:center}
+.cd{min-width:84px;text-align:center;background:var(--tint);border-radius:10px;padding:10px 6px}
+.cd .big{display:block;font:600 2.4rem/1 "Cormorant Garamond",Georgia,serif;color:var(--accent)}
+.cd .u{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.wmore{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:.86rem;color:var(--mute)}
+.wmore div+div{margin-top:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+button,select{font:inherit;color:var(--ink);background:var(--card);border:0;padding:7px 13px;cursor:pointer}
+.seg button.on{background:var(--jade);color:#fff}
+select,.nav button{border:1px solid var(--line);border-radius:8px}
+.sp{flex:1}
+.item{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.item.past{opacity:.55}
+.item.nx{border-color:var(--accent)}
+.dt{min-width:64px;text-align:center}
+.dt .m{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.dt .d{font:600 1.9rem/1 "Cormorant Garamond",Georgia,serif}
+.nm{font-weight:500}.zh{color:var(--mute);margin-left:6px}
+.meta{color:var(--mute);font-size:.86rem}
+.note{font-size:.9rem;margin-top:3px}
+.tag{display:inline-block;font-size:.72rem;border:1px solid var(--accent);color:var(--accent);border-radius:99px;padding:0 7px;margin-left:6px}
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.nav h2{flex:1;text-align:center;margin:0;font:600 1.4rem "Cormorant Garamond",Georgia,serif}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{text-align:center;font-size:.75rem;color:var(--mute);padding:4px 0}
+.cell{min-height:58px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 5px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+.cell.out{visibility:hidden}
+.cell.today{outline:2px solid var(--jade)}
+.cell.sel{background:var(--tint)}
+.cell .p{font-weight:500}.cell .s{font-size:.68rem;color:var(--mute)}
+.cell.hol .p{color:var(--accent)}
+.cell.hol::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);position:absolute;top:6px;right:6px}
+.detail{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-height:56px}
+.foot{margin-top:30px;color:var(--mute);font-size:.82rem;border-top:1px solid var(--line);padding-top:14px}
+:root{--bg:#efe4c8;--card:#f8f0da;--ink:#1f1a14;--mute:#6a5c44;--line:#c4ae7c;--accent:#b0261d;--jade:#2f5d50;--tint:#e7d8b0;--gold:#9a7424}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14120e;--card:#1d1a13;--ink:#eadfc3;--mute:#a89a79;--line:#5a4b2a;--accent:#d8473a;--jade:#7fb8a4;--tint:#2a2418;--gold:#d3a94a}}
+:root[data-theme="dark"]{--bg:#14120e;--card:#1d1a13;--ink:#eadfc3;--mute:#a89a79;--line:#5a4b2a;--accent:#d8473a;--jade:#7fb8a4;--tint:#2a2418;--gold:#d3a94a}
+body{font:16px/1.65 "Noto Serif SC",Georgia,serif;border-top:6px double var(--accent);background-image:radial-gradient(circle at 15% 8%,rgba(154,116,36,.12),transparent 45%),radial-gradient(circle at 85% 92%,rgba(176,38,29,.07),transparent 45%),repeating-linear-gradient(0deg,rgba(120,90,40,.035) 0 1px,transparent 1px 4px)}
+.hd{position:relative;text-align:center;padding:6px 0 4px}
+.taiji{width:56px;height:56px;color:var(--ink);display:block;margin:0 auto 8px}
+h1{font:700 1.8rem/1.25 "Noto Serif SC",Georgia,serif;letter-spacing:.1em;margin:0}
+.zt{font-size:1rem;letter-spacing:.7em;color:var(--accent);margin:.3rem 0 0 .7em;font-weight:700}
+.sub{margin:.4rem 0 .7rem;color:var(--mute);font-style:italic}
+.rule{display:flex;align-items:center;gap:12px;color:var(--gold);margin:0 0 22px}
+.rule::before,.rule::after{content:"";flex:1;height:4px;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+.seal{position:absolute;right:0;top:0;width:44px;height:44px;background:var(--accent);color:#f8f0da;display:grid;place-items:center;font:700 1.6rem/1 "Noto Serif SC",serif;border-radius:3px;transform:rotate(4deg);box-shadow:inset 0 0 0 2px var(--accent),inset 0 0 0 3px rgba(248,240,218,.7)}
+.item,.next,.detail{border:1px solid var(--gold);border-radius:2px;box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px var(--line)}
+.next{padding:18px 20px}
+.item{padding:15px 18px}
+.item.nx{border-color:var(--accent);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px var(--accent)}
+.dt{background:var(--accent);color:#f8f0da;border-radius:2px;padding:7px 4px;align-self:flex-start;min-width:58px}
+.dt .m{color:#f8f0da;opacity:.85}
+.dt .d{font-family:"Noto Serif SC",Georgia,serif;font-weight:700;font-size:1.6rem}
+.zh{color:var(--gold);font-weight:700}
+.cd{background:var(--accent);border-radius:2px}
+.cd .big{color:#f8f0da;font-family:"Noto Serif SC",Georgia,serif;font-weight:700}
+.cd .u{color:#f8f0da}
+.seg,select,.nav button{border-radius:2px;border-color:var(--gold)}
+.seg button.on{background:var(--accent);color:#f8f0da}
+.nav h2,.next b{font-family:"Noto Serif SC",Georgia,serif;font-weight:700}
+.next b{font-size:1.2rem}
+.grid{gap:3px}
+.wd{color:var(--gold);letter-spacing:.1em}
+.cell{border-radius:0}
+.cell.today{outline:2px solid var(--gold);outline-offset:-2px}
+.cell.hol::after{border-radius:1px;transform:rotate(45deg)}
+.foot{border-top:3px double var(--gold)}
+.theme{position:absolute;left:0;top:0;width:44px;height:44px;padding:0;border:1px solid var(--gold);border-radius:50%;background:var(--card);color:var(--ink);display:grid;place-items:center}
+.theme svg{width:32px;height:32px;transition:transform .7s cubic-bezier(.4,.1,.2,1)}
+.theme:hover{border-color:var(--accent)}
+[hidden]{display:none!important}
+@media(max-width:480px){.cell{min-height:50px;padding:3px}.cell .s{font-size:.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p><a href="/">&larr; DaoPedia home</a> &middot; <a href="/deities/">Deities</a> &middot; <a href="/festivals/">Festivals</a> &middot; <a href="/glossary/">Glossary</a></p>
+  <header class="hd">
+    <button class="theme" id="theme" aria-label="Switch between light and dark mode" title="Light / dark"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="var(--card)" stroke="currentColor" stroke-width="4"/><path d="M50 4A46 46 0 0 1 50 96A23 23 0 0 1 50 50A23 23 0 0 0 50 4Z" fill="currentColor"/><circle cx="50" cy="27" r="7" fill="currentColor"/><circle cx="50" cy="73" r="7" fill="var(--card)"/></svg></button>
+    <div class="seal" aria-hidden="true">道</div>
+    <svg class="taiji" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="var(--card)" stroke="currentColor" stroke-width="3"/><path d="M50 2A48 48 0 0 1 50 98A24 24 0 0 1 50 50A24 24 0 0 0 50 2Z" fill="currentColor"/><circle cx="50" cy="26" r="7" fill="currentColor"/><circle cx="50" cy="74" r="7" fill="var(--card)"/></svg>
+    <h1>Taoist Holiday Calendar</h1>
+    <div class="zt">道曆</div>
+    <p class="sub">Lunar and Gregorian dates for Zhengyi observances</p>
+    <div class="rule">❖</div>
+  </header>
+  <div class="next" id="next"></div>
+
+  <div class="bar">
+    <div class="seg" id="tabs"><button data-v="list" class="on">List</button><button data-v="cal">Calendar</button></div>
+    <span class="sp"></span>
+    <select id="year" aria-label="Year"></select>
+    <div class="seg" id="mode" hidden><button data-m="greg" class="on">Gregorian</button><button data-m="lunar">Lunar</button></div>
+  </div>
+
+  <section id="list"></section>
+  <section id="cal" hidden>
+    <div class="nav"><button id="prev" aria-label="Previous month">&larr;</button><h2 id="mtitle"></h2><button id="nxt" aria-label="Next month">&rarr;</button></div>
+    <div class="grid" id="grid"></div>
+    <div class="detail" id="detail">Tap a day to see its lunar date and any observances.</div>
+  </section>
+
+  <p class="foot">Lunar dates are computed by your browser from the Chinese calendar (China Standard Time), so they stay accurate every year. Observances falling in a leap month are not shown, by convention. Dates marked <span class="tag" style="margin:0">verify</span> vary between lineages or sources. Please check with your own teacher or temple.</p>
+</div>
+
+<script>
+// ===== EDIT HERE: the holiday list. m = lunar month, d = lunar day =====
+const HOLIDAYS = [
+ {m:1,d:1,en:"Lunar New Year",zh:"春節",note:"The start of the lunar year. Families and temples make offerings, burn incense to welcome the new year’s blessings, and renew good intentions."},
+ {m:1,d:1,en:"Yuanshi Tianzun’s Birthday",zh:"元始天尊誕",note:"Honors the Celestial Worthy of the Primordial Beginning, first of the Three Pure Ones (Sanqing), who presides over the Jade Pure realm and the source of creation."},
+ {solstice:true,en:"Lingbao Tianzun’s Birthday",zh:"靈寶天尊誕",note:"Honors the Celestial Worthy of the Numinous Treasure, second of the Three Pure Ones, who presides over the Upper Pure realm and the sacred scriptures. Observed on the Winter Solstice, a solar date rather than a lunar one."},
+ {m:1,d:9,en:"Jade Emperor’s Birthday",zh:"玉皇誕",note:"Celebrates the Jade Emperor (Yuhuang Dadi), ruler of the heavenly bureaucracy. Devotees offer incense and prayers, and many temples hold special rites."},
+ {m:1,d:15,en:"Shangyuan Festival",zh:"上元節",note:"Birthday of the Heavenly Official (Tianguan), who bestows blessings. The first of the Three Officials festivals, a time for prayers for good fortune and lantern displays."},
+ {m:2,d:3,en:"Wenchang Dijun’s Birthday",zh:"文昌帝君誕",note:"Honors Wenchang Dijun, patron deity of scholarship, writing and examinations. Students and teachers traditionally pray for clarity and success.",verify:true},
+ {m:2,d:15,en:"Laozi’s Birthday (Daode Tianzun)",zh:"太上老君誕",note:"Birthday of Taishang Laojun, the deified Laozi and author of the Daodejing. A day for reciting scripture and reflecting on the Dao."},
+ {m:3,d:3,en:"Zhenwu Dadi’s Birthday",zh:"真武大帝誕",note:"Honors Zhenwu Dadi, the Perfected Warrior and guardian deity of the North, invoked for protection and the banishing of evil.",verify:true},
+ {m:3,d:28,en:"Dongyue Dadi’s Birthday",zh:"東嶽大帝誕",note:"Honors Dongyue Dadi, god of Mount Tai, who oversees life, death and the registers of the underworld. Temples hold large offerings.",verify:true},
+ {m:4,d:14,en:"Lü Dongbin’s Birthday",zh:"呂祖誕",note:"Honors Patriarch Lü Dongbin, foremost of the Eight Immortals, known for inner alchemy and compassion. Especially honored in Quanzhen, but widely observed.",verify:true},
+ {m:5,d:18,en:"Zhang Daoling’s Birthday",zh:"張天師誕",note:"Honors Zhang Daoling, the first Celestial Master (Zhang Tianshi), who received the Zhengyi covenant from Laojun and founded the Way of the Celestial Masters. Central to Zhengyi devotion.",verify:true},
+ {m:7,d:1,en:"Ghost Month Begins",zh:"開鬼門",note:"Folk tradition says the gates of the underworld open and spirits roam the human world for the seventh month. Families and temples begin making offerings.",verify:true},
+ {m:7,d:15,en:"Zhongyuan / Hungry Ghost Festival",zh:"中元節",note:"Birthday of the Earthly Official (Diguan), who pardons sins, and the peak of Ghost Month. Priests perform Pudu rites to feed and liberate hungry ghosts, and offerings are made for ancestors."},
+ {m:7,d:30,en:"Ghost Month Ends",zh:"關鬼門",note:"The gates of the underworld close and the wandering spirits return. Final offerings and rites mark the end of the seventh month.",verify:true},
+ {m:8,d:3,en:"Zaojun’s Birthday",zh:"灶君誕",note:"Honors Zaojun, the Kitchen Deity, who watches over the household and reports on it to Heaven each year.",verify:true},
+ {m:9,d:9,en:"Chongyang Festival",zh:"重陽節",note:"The Double Ninth, a day of yang energy associated with ascending heights, longevity and honoring elders. Also linked to Dou Mu devotions (days 1–9).",verify:true},
+ {m:10,d:15,en:"Xiayuan Festival",zh:"下元節",note:"Birthday of the Water Official (Shuiguan), who relieves misfortune and danger. The third of the Three Officials festivals, a time for prayers of repentance and gratitude."},
+ {m:11,d:11,en:"Taiyi Jiuku Tianzun’s Birthday",zh:"太乙救苦天尊誕",note:"Honors Taiyi Jiuku Tianzun, the compassionate Savior from Suffering, central to Taoist rites that guide and relieve the deceased.",verify:true},
+ {m:12,d:24,en:"Zaojun Sends-off",zh:"送灶",note:"Zaojun ascends to Heaven to report on the household’s year. Offerings of sweets are traditionally made to send him off with good words.",verify:true}
+ // Add other lineage days here, e.g.:
+ // {m:1,d:15,en:"…",zh:"…",note:"…",verify:true},
+];
+// =======================================================================
+
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const fmt=new Intl.DateTimeFormat("en-u-ca-chinese",{month:"numeric",day:"numeric"});
+const lc=new Map();
+function lunar(dt){
+  const k=dt.getFullYear()*400+dt.getMonth()*32+dt.getDate();
+  if(lc.has(k))return lc.get(k);
+  let m="1",d="1";
+  for(const p of fmt.formatToParts(dt)){if(p.type==="month")m=p.value;if(p.type==="day")d=p.value}
+  const r={m:parseInt(m,10),d:parseInt(d,10),leap:/\D/.test(m)};
+  lc.set(k,r);return r;
+}
+const mk=(y,mo,d)=>new Date(y,mo,d,12);
+const iso=dt=>dt.getFullYear()+"-"+dt.getMonth()+"-"+dt.getDate();
+const yc={};
+function yearData(y){
+  if(yc[y])return yc[y];
+  const occ=[],by={};
+  for(let dt=mk(y,0,1);dt.getFullYear()===y;dt=mk(y,dt.getMonth(),dt.getDate()+1)){
+    const l=lunar(dt);if(l.leap)continue;
+    for(const h of HOLIDAYS)if(h.m===l.m&&h.d===l.d){
+      const o={h,date:new Date(dt)};occ.push(o);(by[iso(dt)]=by[iso(dt)]||[]).push(h);
+    }
+  }
+  const sy=y%100,sd=Math.floor(sy*0.2422+21.94)-Math.floor(sy/4);
+  for(const h of HOLIDAYS)if(h.solstice){const dt=mk(y,11,sd);occ.push({h,date:dt});(by[iso(dt)]=by[iso(dt)]||[]).push(h)}
+  occ.sort((a,b)=>a.date-b.date);
+  return yc[y]={occ,by};
+}
+const today=new Date();today.setHours(12,0,0,0);
+let year=today.getFullYear(),view="list",mode="greg",cm=today.getMonth(),cy=today.getFullYear(),selected=null;
+const $=id=>document.getElementById(id);
+const long=dt=>dt.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+const lname=l=>(l.leap?"Leap ":"")+"Month "+l.m+", Day "+l.d;
+const lun=h=>h.solstice?"Winter Solstice (solar date)":"Lunar month "+h.m+", day "+h.d;
+const tag=h=>h.verify?'<span class="tag">verify</span>':"";
+
+function renderNext(){
+  const all=[],ty=today.getFullYear();
+  for(const y of [ty-1,ty,ty+1])all.push(...yearData(y).occ);
+  const nx=all.find(o=>o.date>=today),pv=[...all].reverse().find(o=>o.date<today);
+  const el=$("next");
+  if(!nx){el.textContent="";return}
+  const gap=o=>Math.round((o.date-today)/864e5);
+  const short=o=>MON[o.date.getMonth()]+" "+o.date.getDate();
+  const n=gap(nx),then=all.filter(o=>o.date>nx.date).slice(0,2);
+  let h='<div class="wtop"><div class="cd"><span class="big">'+(n===0?"Today":n)+'</span>'+(n===0?"":'<span class="u">'+(n===1?"day":"days")+'</span>')+'</div><div><div class="meta">Next up</div><b>'+nx.h.en+'</b> <span class="zh">'+nx.h.zh+'</span>'+tag(nx.h)+'<div>'+long(nx.date)+'</div><div class="meta">'+lun(nx.h)+'</div></div></div><div class="note" style="margin-top:8px">'+nx.h.note+'</div><div class="wmore">';
+  if(then.length)h+='<div>Then: '+then.map(o=>o.h.en+' ('+short(o)+')').join(', ')+'</div>';
+  if(pv)h+='<div>Most recent: '+pv.h.en+' ('+short(pv)+', '+(-gap(pv)===1?'yesterday':-gap(pv)+' days ago')+')</div>';
+  el.innerHTML=h+'</div>';
+}
+function renderList(){
+  const {occ}=yearData(year);
+  const first=occ.find(o=>o.date>=today);
+  $("list").innerHTML=occ.map(o=>{
+    const d=o.date,past=d<today,nx=o===first&&d.getFullYear()===today.getFullYear();
+    return '<div class="item'+(past?" past":"")+(nx?" nx":"")+'"><div class="dt"><div class="m">'+MON[d.getMonth()]+'</div><div class="d">'+d.getDate()+'</div></div><div><div class="nm">'+o.h.en+'<span class="zh">'+o.h.zh+"</span>"+tag(o.h)+'</div><div class="meta">'+d.toLocaleDateString("en-US",{weekday:"long"})+" &middot; "+lun(o.h)+'</div><div class="note">'+o.h.note+"</div></div></div>";
+  }).join("");
+}
+function renderCal(){
+  $("mtitle").textContent=MONL[cm]+" "+cy;
+  const by=yearData(cy).by,first=mk(cy,cm,1),n=mk(cy,cm+1,0).getDate();
+  let h=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(w=>'<div class="wd">'+w+"</div>").join("");
+  for(let i=0;i<first.getDay();i++)h+='<div class="cell out"></div>';
+  for(let d=1;d<=n;d++){
+    const dt=mk(cy,cm,d),l=lunar(dt),k=iso(dt);
+    const ll=(l.leap?"闰":"")+(l.d===1?l.m+"/1":l.d);
+    const p=mode==="greg"?d:ll,s=mode==="greg"?ll:(d===1?MON[cm]+" 1":d);
+    h+='<button class="cell'+(by[k]?" hol":"")+(k===iso(today)?" today":"")+(k===selected?" sel":"")+'" data-d="'+d+'"><span class="p">'+p+'</span><span class="s">'+s+"</span></button>";
+  }
+  $("grid").innerHTML=h;
+}
+function showDetail(d){
+  const dt=mk(cy,cm,d),l=lunar(dt),hs=yearData(cy).by[iso(dt)]||[];
+  selected=iso(dt);
+  $("detail").innerHTML="<b>"+long(dt)+'</b><div class="meta">'+lname(l)+"</div>"+hs.map(x=>'<div class="note"><span class="nm">'+x.en+'</span><span class="zh">'+x.zh+"</span>"+tag(x)+"<br>"+x.note+"</div>").join("");
+  renderCal();
+}
+function setView(v){
+  view=v;
+  $("list").hidden=v!=="list";$("cal").hidden=v!=="cal";$("mode").hidden=v!=="cal";$("year").hidden=v!=="list";
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  v==="cal"?renderCal():renderList();
+}
+const ys=$("year");
+for(let y=today.getFullYear()-1;y<=today.getFullYear()+5;y++)ys.add(new Option(y,y,false,y===year));
+ys.onchange=()=>{year=+ys.value;renderList()};
+$("tabs").onclick=e=>{if(e.target.dataset.v)setView(e.target.dataset.v)};
+$("mode").onclick=e=>{if(!e.target.dataset.m)return;mode=e.target.dataset.m;
+  document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));renderCal()};
+$("prev").onclick=()=>{cm--;if(cm<0){cm=11;cy--}renderCal()};
+$("nxt").onclick=()=>{cm++;if(cm>11){cm=0;cy++}renderCal()};
+$("grid").onclick=e=>{const c=e.target.closest(".cell");if(c&&c.dataset.d)showDetail(+c.dataset.d)};
+const root=document.documentElement;let rot=0;
+const isDark=()=>root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+try{const t=localStorage.getItem("theme");if(t)root.dataset.theme=t}catch(e){}
+$("theme").onclick=()=>{
+  const t=isDark()?"light":"dark";root.dataset.theme=t;rot+=360;
+  $("theme").firstElementChild.style.transform="rotate("+rot+"deg)";
+  try{localStorage.setItem("theme",t)}catch(e){}
+};
+renderNext();setView("list");
+</script>
+</body>
+</html>
